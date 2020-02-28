@@ -26,10 +26,6 @@ public:
 		capacity = designatedSize;
 		numValuesFilled = 0;
 		vec = alloc.allocate(capacity);
-		for (int i = 0; i < capacity; i++)
-		{
-			vec[i] = 0;
-		}
 	}
 	Vector(const Vector& vecToCopy)
 	{
@@ -65,6 +61,19 @@ public:
 			numValuesFilled++;
 		}
 		
+	}
+
+	void pop_back()
+	{
+		if (capacity == 0) return;
+		alloc.destroy(back());
+		--numValuesFilled;
+	}
+
+	T* back()
+	{
+		T* backPointer = &vec[numValuesFilled];
+		return backPointer;
 	}
 
 	void resize()
@@ -133,30 +142,16 @@ int main()
 	myVec.push_back(4);
 	myVec.push_back(5);
 	myVec.push_back(6);
-	myVec.push_back(6);
-	myVec.push_back(6);
-	myVec.push_back(6);
-	myVec.push_back(6);
-	myVec.push_back(6);
-	myVec.push_back(6);
-	myVec.push_back(6);
-	myVec.push_back(6);
-	myVec.push_back(6);
-	myVec.push_back(6);
-	myVec.push_back(6);
-	myVec.push_back(6);
-	myVec.push_back(6);
-	myVec.push_back(6);
-	myVec.push_back(6);
-	myVec.push_back(6);
-	myVec.push_back(6);
-	myVec.push_back(6);
-	myVec.push_back(6);
-	myVec.push_back(6);
-	myVec.push_back(6);
-	myVec.push_back(6);
+	for (int i = 0; i < myVec.Size(); i++) std::cout << myVec.at(i);
+	std::cout << std::endl;
+	myVec.pop_back();
+	for (int i = 0; i < myVec.Size(); i++) std::cout << myVec.at(i);
+	std::cout << std::endl;
 	myVec.push_back(6);
 	for (int i = 0; i < myVec.Size(); i++) std::cout << myVec.at(i);
+	std::cout << std::endl;
+
+	return 0;
 
 
 }
