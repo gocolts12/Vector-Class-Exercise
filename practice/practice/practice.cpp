@@ -20,6 +20,7 @@ public:
 		capacity = 0;
 		numValuesFilled = 0;
 	}
+
 	Vector(const int &designatedSize)
 	{
 		std::cout << "size-defined constructor called" << std::endl;
@@ -27,14 +28,15 @@ public:
 		numValuesFilled = 0;
 		vec = alloc.allocate(capacity);
 	}
-	Vector(const Vector& vecToCopy)
+
+	Vector(Vector& vecToCopy)
 	{
 		std::cout << "copy constructor called" << std::endl;
-		int copySize = vecToCopy.Size();
+		numValuesFilled = vecToCopy.Size();
 
-		capacity = copySize;
-		vec = alloc.allocate(copySize);
-		for (int i = 0; i < copySize; i++)
+		capacity = vecToCopy.getCapacity();
+		vec = alloc.allocate(capacity);
+		for (int i = 0; i < numValuesFilled; i++)
 		{
 			vec[i] = vecToCopy[i];
 		}
@@ -91,21 +93,15 @@ public:
 		return numValuesFilled;
 	}
 
-
-	const T& at(int index) const
+	int getCapacity()
 	{
-		try
-		{
-			return vec[index];
-		}
-		catch (const std::exception& e)
-		{
-			std::cout << e.what() << std::endl;
-		}
+		return capacity;
 	}
 
-	T& at(int index)
+	const T& at(int index)
 	{
+		//Using exception handling just so we don't segfault and crash during execution
+		//I know it's probably bad. Please don't yell at me 
 		try 
 		{
 			return vec[index];
@@ -114,11 +110,6 @@ public:
 		{
 			std::cout << e.what() << std::endl;
 		}
-	}
-
-	const T& operator[](int index) const
-	{
-		return vec[index];
 	}
 
 	const T& operator[](int index)
@@ -136,6 +127,7 @@ public:
 int main()
 {
 	Vector<int> myVec;
+	myVec.pop_back();
 	myVec.push_back(1);
 	myVec.push_back(2);
 	myVec.push_back(3);
@@ -150,6 +142,12 @@ int main()
 	myVec.push_back(6);
 	for (int i = 0; i < myVec.Size(); i++) std::cout << myVec.at(i);
 	std::cout << std::endl;
+
+	//Test copy  constructor
+
+	Vector<int> myVec2(myVec);
+
+	for (int i = 0; i < myVec2.Size(); i++) std::cout << myVec2.at(i);
 
 	return 0;
 
